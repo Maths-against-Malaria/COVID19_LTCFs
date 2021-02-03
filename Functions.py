@@ -1,5 +1,5 @@
-from constant import *
-
+from constant_Germany import *
+#  from constant_USA import *    # Uncomment this line and comment the line above if you are simulating USA
 
 class FuncClass:
     """This class contains all the functions we need to define the model"""
