@@ -244,6 +244,6 @@ for i in range(aa):  # with and without seasonality
                 df = df.append(df2, ignore_index=True)
 
 # Saving the data from the simulation
-df.to_csv("covid_19_risk_group_simulation_LTCF_WT_NCR.csv")
+df.to_csv("covid_19_risk_group_simulation_Prison.csv")
 
 print("Simulation finished successfully. Please check your data")

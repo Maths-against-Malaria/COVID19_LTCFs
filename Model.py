@@ -21,8 +21,8 @@ class ModelFunc:
         h_sum = [func.hsum(y, i, j) for i, j in zip(HLeft, HRight)]
 
         # Total number of individuals that can be isolated in quarantine wards
-        aq = fsiso * (func.hsum(h_sum, 10, 13) + func.hsum(h_sum, 15, 18)) + sum(
-            [h_sum[i] for i in np.arange(3, 20, 5)])
+        aq = fsiso * (func.hsum(h_sum, 10, 13) + func.hsum(h_sum, 15, 18)) + sum([h_sum[i] for i in np.arange(3, 20, 5)]
+                                                                                 )
 
         # Time information
         tps = (t, tdista, tdistd, tiso[0], tiso[1])
@@ -38,8 +38,18 @@ class ModelFunc:
             mixmat = np.multiply(Xfinal_init[4], func.r0(t, brep)*coef_NGM)
         elif tdiste <= t < tdistf:
             mixmat = np.multiply(Xfinal_init[5], func.r0(t, brep)*coef_NGM)
-        elif t >= tdistf:
+        elif tdistf <= t < tdistg:
             mixmat = np.multiply(Xfinal_init[6], func.r0(t, brep)*coef_NGM)
+        elif tdistg <= t < tdisth:
+            mixmat = np.multiply(Xfinal_init[7], func.r0(t, brep)*coef_NGM)
+        elif tdisth <= t < tdisti:
+            mixmat = np.multiply(Xfinal_init[8], func.r0(t, brep)*coef_NGM)
+        elif tdisti <= t < tdistj:
+            mixmat = np.multiply(Xfinal_init[9], func.r0(t, brep)*coef_NGM)
+        elif tdistj <= t < tdistk:
+            mixmat = np.multiply(Xfinal_init[10], func.r0(t, brep)*coef_NGM)
+        elif t >= tdistk:
+            mixmat = np.multiply(Xfinal_init[11], func.r0(t, brep)*coef_NGM)
         else:
             mixmat = np.multiply(Xfinal_init[0], func.r0(t, brep)*coef_NGM)
 
