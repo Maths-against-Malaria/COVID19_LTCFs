@@ -5,7 +5,7 @@ NH = (16, 16, 16, 16)
 
 # Durations at stages DE,DP,DI,DL. Dtest is the waiting time before tests results (days)
 DH = (3.7, 1, 5, 5)
-Dtest = (1/2, 1, 2, 3, 4)
+Dtest = [2]  # (1/2, 1, 2, 3, 4)
 
 # Testing rate per Erlang stage (assumes that we have the same number of Erlang stages
 DXi = (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
@@ -16,38 +16,38 @@ Rate = [i / j for i, j in zip(NH, DH)]
 epsi, phi, gamma, delta = Rate
 
 # daily incoming infections in the general and staff population
-LExt = 45
+LExt = 50
 
 # Population (General, Staff, Risk group)
-NPop = (81.8e6, 5e5, 7e5)
-N = sum(NPop)
+N = 331e6
+NPop = (329.177e6, 423e3, 1.4e6)
 
-N_init_inf = 200
+N_init_inf = 100
 
 # Initial number of individuals in the different compartments
 y0 = [0 for i in np.arange(5 * (NH[0] + NH[1] + NH[2] + NH[3] + 2) + 3)]
-y0[0], y0[1], y0[2] = (81.8e6 - N_init_inf, 5e5, 7e5)  # Susceptible individuals in SGe, SSt, SRi
+y0[0], y0[1], y0[2] = (329.177e6 - N_init_inf, 423e3, 1.4e6)  # Susceptible individuals in SGe, SSt, SRi
 y0[NH[0] + NH[1] + 3] = N_init_inf  # Initial fully infectious individuals in the general population
 
 # Sensitivity of the test sH
 sH = np.array([[0,    0,     0,    0],              # No test
-               [0,    0.10,  0.65, 0.35],           # Poor test
-               [0.03, 0.30,  0.75, 0.50],           # Intermediate test
-               [0.15, 0.60,  0.80, 0.60],           # Good test
-               [0.25, 0.75,  0.90, 0.65],           # Very good test
-               [0.30, 0.80,  0.95, 0.85]])          # Excellent test
+               # [0,    0.10,  0.65, 0.35],           # Poor test
+               # [0.03, 0.30,  0.75, 0.50],           # Intermediate test
+               [0.15, 0.60,  0.80, 0.60]])  #,           # Good test
+               #  [0.25, 0.75,  0.90, 0.65],           # Very good test
+               #  [0.30, 0.80,  0.95, 0.85]])          # Excellent test
 
 # Contagiousness at the infectious stages P, I, L
 cH = (0.5, 1, 0.5)
 
 # Probability  fsick of showing symptoms in the Ge, and St sub-populations
-fsick = 0.58
+fsick = 0.50
 
 # Probability fiso of being isolated in the Ge, and St sub-populations
-fiso = 0.58
+fiso = 0.48
 
 # Probability fDead of dying from the COVID-19 in the Ge, and St sub-populations
-fdead = 0.047
+fdead = 0.04
 
 # Probability of showing symptoms and die in the general and staff populations
 fside = fsick * fdead
@@ -65,29 +65,26 @@ fdead_Ri = 0.07
 fside_ri = fsick_Ri * fdead_Ri
 
 # Maximum carrying capacity Qmax of quarantine ward (ICU capacity) per 10000 inhabitants
-Qmax = 200 * N / 10000
+Qmax = 30 * N / 10000
 
 # Simulation time span
-sim_time = 750
+sim_time = 800
 
 # sustainability period of quarantine measures (till the end of the simulation)
-tiso = (30, sim_time)
+tiso = (20, sim_time)
 
 # Sustainability period for the general distancing measures (first lockdown)
-tdista = 53
-tdistb = 90
-
-# Sustainability period for the general distancing measures (summer lockdown)
-tdistc = 230
-
-# Sustainability period for the general distancing measures (soft lockdown)
-tdistd = 290
-
-# Sustainability period for the general distancing measures (hardlockdown)
-tdiste = 380
-
-# Sustainability period for the general distancing measures (postlockdown)
-tdistf = 450
+tdista = 35  # March    15th, 2020
+tdistb = 75  # May      29th
+tdistc = 185  # August   02nd
+tdistd = 200  # October  01st
+tdiste = 250  # November 05th
+tdistf = 260  # November 24th
+tdistg = 309  # December 01st
+tdisth = 315  # December 10th
+tdisti = 325  # December 20th
+tdistj = 350  # January  08th, 2021
+tdistk = 500  # April    15th
 
 # Additional test control for Ge per disease stage (P, I, L)
 fpos_mat = np.array([[0, 0, 0],
@@ -97,7 +94,7 @@ fpos_mat = np.array([[0, 0, 0],
 phome = 0.75
 
 # Parameters of the basic reproduction number R0 (_R0, a, tR0max, seasonality)
-ParamRO = [[3.4, 0.43, 300, "yes"]]
+ParamRO = [[3.2, 0.35, 354, "yes"]]
 
 # Contact rates at stages P, I, L
 denBeta = sum([i * j for i, j in zip(cH, DH[1:])])
@@ -188,28 +185,28 @@ HRight = [EGeR, EStnR, EStsR, EStpR, ERiR, PGeR, PStnR, PStsR, PStpR, PRiR, IGeR
           LStnR, LStsR, LStpR, LRiR]
 
 # Total contacts in the General population, Staff population, and risk group per day.
-nPop = (50, 50, 10)
+nPop = (60, 60, 30)
 
-xm = 0.9961
-ym = 0.00375
+xm = 0.9992
+ym = 0.000767
 um = ym*nPop[0]*NPop[0]/(nPop[1]*NPop[1])
 vm = 0.24
 pm = (1 - xm - ym)*nPop[0]*NPop[0]/(nPop[2]*NPop[2])
 qm = (1 - um - vm)*nPop[1]*NPop[1]/(nPop[2]*NPop[2])
 
-pcontreduc_WT_mat = np.array([[0, 0.65, 0.45, 0.60, 0.70, 0.60, 0],      # pGe
-                              [0, 0.65, 0.45, 0.60, 0.70, 0.60, 0],      # pGeSt
-                              [0, 0.85, 0.80, 0.85, 0.85, 0.85, 0],      # pRiGe
-                              [0, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80],   # pStSt
-                              [0, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70],   # pStRi
-                              [0, 0.65, 0.55, 0.70, 0.70, 0.70, 0.60]])  # pRiRi
+pcontreduc_WT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
+                              [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
+                              [0, 0.80, 0.50, 0.75, 0.65, 0.85, 0.75, 0.80, 0.85, 0.80, 0.85, 0],      # pRiGe
+                              [0, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.60],   # pStSt
+                              [0, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70],   # pStRi
+                              [0, 0.30, 0.20, 0.30, 0.30, 0.30, 0.25, 0.30, 0.30, 0.30, 0.30, 0.10]])  # pRiRi
 
-pcontreduc_NT_mat = np.array([[0, 0.65, 0.45, 0.60, 0.70, 0.60, 0],      # pGe
-                              [0, 0.65, 0.45, 0.60, 0.70, 0.60, 0],      # pGeSt
-                              [0, 0.85, 0.80, 0.85, 0.85, 0.85, 0],      # pRiGe
-                              [0, 0.80, 0.80, 0.80, 0.80, 0.80, 0],      # pStSt
-                              [0, 0.70, 0.70, 0.70, 0.70, 0.70, 0],      # pStRi
-                              [0, 0.65, 0.55, 0.70, 0.70, 0.70, 0]])     # pRiRi
+pcontreduc_NT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
+                              [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
+                              [0, 0.80, 0.50, 0.75, 0.65, 0.85, 0.75, 0.80, 0.85, 0.80, 0.85, 0],      # pRiGe
+                              [0, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0],      # pStSt
+                              [0, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0],      # pStRi
+                              [0, 0.30, 0.20, 0.30, 0.30, 0.30, 0.25, 0.30, 0.30, 0.30, 0.30, 0]])     # pRiRi
 
 # Unadjusted mixing matrix with contact reduction (with testing)
 Xfinal_init_NT = []
@@ -220,12 +217,8 @@ xinit = np.array(
      [um * nPop[1] * N ** 2 / NPop[0],   vm * nPop[1] * N ** 2 / NPop[1],  (1 - um - vm) * nPop[1] * N ** 2 / NPop[2]],
      [pm * nPop[2] * N ** 2 / NPop[0],   qm * nPop[2] * N ** 2 / NPop[1],  (1 - pm - qm) * nPop[2] * N ** 2 / NPop[2]]])
 
-for i in range(7):
+for i in range(12):
     pcontreduc_loop = list(pcontreduc_WT_mat[:, i])
-    #if i == 0:
-    #    fm = 0
-    #else:
-       # fm = 1 - (1 - pcontreduc_loop[0] - (1 - xm - ym) * (1 - pcontreduc_loop[1])) / (xm + ym)
 
     M_mat = np.array([[1-pcontreduc_loop[0], 1-pcontreduc_loop[1],  1-pcontreduc_loop[2]],
                       [1-pcontreduc_loop[1], 1-pcontreduc_loop[3],  1-pcontreduc_loop[4]],
@@ -233,28 +226,13 @@ for i in range(7):
     Xfinal_init_WT.append(np.multiply(xinit, M_mat))
 
 # Unadjusted contact matrix with no test
-for i in range(7):
+for i in range(12):
     pcontreduc_loop = list(pcontreduc_NT_mat[:, i])
-    #if i == 0:
-    #    fm = 0
-    #else:
-    # fm = 1 - (1 - pcontreduc_loop[0] - (1 - xm - ym) * (1 - pcontreduc_loop[1])) / (xm + ym)
 
     M_mat = np.array([[1-pcontreduc_loop[0], 1-pcontreduc_loop[1],  1-pcontreduc_loop[2]],
                       [1-pcontreduc_loop[1], 1-pcontreduc_loop[3],  1-pcontreduc_loop[4]],
                       [1-pcontreduc_loop[2], 1-pcontreduc_loop[4],  1-pcontreduc_loop[5]]])
     Xfinal_init_NT.append(np.multiply(xinit, M_mat))
-#for i in range(7):
-#    pcontreduc_loop = list(pcontreduc_NT_mat[:, i])
-#    if i == 0:
-#        fm = 0
-#    else:
-#        fm = 1 - (1 - pcontreduc_loop[0] - (1 - xm - ym) * (1 - pcontreduc_loop[1])) / (xm + ym)
-
-#    M_mat = np.array([[1-fm,                 1-fm,                 1-pcontreduc_loop[1]],
-#                      [1-fm,                 1-pcontreduc_loop[2], 1-pcontreduc_loop[3]],
-#                      [1-pcontreduc_loop[1], 1-pcontreduc_loop[3], 1-pcontreduc_loop[4]]])
-#    Xfinal_init_NT.append(np.multiply(xinit, M_mat))
 
 # Number of infected compartments
 n_inf_comp = 3 * sum(NH)
