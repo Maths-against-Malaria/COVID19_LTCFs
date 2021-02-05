@@ -8,7 +8,7 @@ DH = (3.7, 1, 5, 5)
 Dtest = [2]  # (1/2, 1, 2, 3, 4)
 
 # Testing rate per Erlang stage (assumes that we have the same number of Erlang stages
-DXi = (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
+DXi = [5]  # (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
 test_rate = [1/i for i in DXi]
 
 # drifting rates (epsilon, phi, gamma, delta)
@@ -31,11 +31,11 @@ y0[NH[0] + NH[1] + 3] = N_init_inf  # Initial fully infectious individuals in th
 
 # Sensitivity of the test sH
 sH = np.array([[0,    0,     0,    0],              # No test
-               # [0,    0.10,  0.65, 0.35],           # Poor test
-               # [0.03, 0.30,  0.75, 0.50],           # Intermediate test
-               [0.15, 0.60,  0.80, 0.60]])  #,           # Good test
-               #  [0.25, 0.75,  0.90, 0.65],           # Very good test
-               #  [0.30, 0.80,  0.95, 0.85]])          # Excellent test
+               [0,    0.10,  0.65, 0.35],           # Poor test
+               [0.03, 0.30,  0.75, 0.50],           # Intermediate test
+               [0.15, 0.60,  0.80, 0.60],           # Good test
+               [0.25, 0.75,  0.90, 0.65],           # Very good test
+               [0.30, 0.80,  0.95, 0.85]])          # Excellent test
 
 # Contagiousness at the infectious stages P, I, L
 cH = (0.5, 1, 0.5)
@@ -188,26 +188,26 @@ HRight = [EGeR, EStnR, EStsR, EStpR, ERiR, PGeR, PStnR, PStsR, PStpR, PRiR, IGeR
 nPop = (60, 60, 30)
 
 xm = 0.9992
-ym = 0.000767
+ym = 0.0006
 um = ym*nPop[0]*NPop[0]/(nPop[1]*NPop[1])
-vm = 0.24
+vm = 0.20
+
 pm = (1 - xm - ym)*nPop[0]*NPop[0]/(nPop[2]*NPop[2])
 qm = (1 - um - vm)*nPop[1]*NPop[1]/(nPop[2]*NPop[2])
 
 pcontreduc_WT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
                               [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
-                              [0, 0.80, 0.50, 0.75, 0.65, 0.85, 0.75, 0.80, 0.85, 0.80, 0.85, 0],      # pRiGe
-                              [0, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.60],   # pStSt
-                              [0, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70],   # pStRi
-                              [0, 0.30, 0.20, 0.30, 0.30, 0.30, 0.25, 0.30, 0.30, 0.30, 0.30, 0.10]])  # pRiRi
+                              [0, 0.60, 0.45, 0.50, 0.40, 0.55, 0.50, 0.60, 0.65, 0.60, 0.65, 0],      # pRiGe
+                              [0, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55],   # pStSt
+                              [0, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40],   # pStRi
+                              [0, 0.20, 0.15, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.10]])  # pRiRi
 
 pcontreduc_NT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
                               [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
-                              [0, 0.80, 0.50, 0.75, 0.65, 0.85, 0.75, 0.80, 0.85, 0.80, 0.85, 0],      # pRiGe
-                              [0, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0.80, 0],      # pStSt
-                              [0, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0.70, 0],      # pStRi
-                              [0, 0.30, 0.20, 0.30, 0.30, 0.30, 0.25, 0.30, 0.30, 0.30, 0.30, 0]])     # pRiRi
-
+                              [0, 0.60, 0.45, 0.50, 0.40, 0.55, 0.50, 0.60, 0.65, 0.60, 0.65, 0],      # pRiGe
+                              [0, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55],   # pStSt
+                              [0, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40],   # pStRi
+                              [0, 0.20, 0.15, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.10]])  # pRiRi
 # Unadjusted mixing matrix with contact reduction (with testing)
 Xfinal_init_NT = []
 Xfinal_init_WT = []
