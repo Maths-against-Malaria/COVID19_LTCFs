@@ -5,10 +5,10 @@ NH = (16, 16, 16, 16)
 
 # Durations at stages DE,DP,DI,DL. Dtest is the waiting time before tests results (days)
 DH = (3.7, 1, 5, 5)
-Dtest = [2]  # (1/2, 1, 2, 3, 4)
+Dtest = (1/2, 1, 2, 3, 4)
 
 # Testing rate per Erlang stage (assumes that we have the same number of Erlang stages
-DXi = (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
+DXi = [5]  # (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
 test_rate = [1/i for i in DXi]
 
 # drifting rates (epsilon, phi, gamma, delta)
@@ -47,7 +47,7 @@ fsick = 0.58
 fiso = 0.58
 
 # Probability fDead of dying from the COVID-19 in the Ge, and St sub-populations
-fdead = 0.047
+fdead = 0.016
 
 # Probability of showing symptoms and die in the general and staff populations
 fside = fsick * fdead
@@ -55,14 +55,11 @@ fside = fsick * fdead
 # Probability of being sick and isolated
 fsiso = fsick * fiso
 
-# Probability fiso of being isolated in the Ge, and St sub-populations
-# fiso_Ri = 0.65
-
 # Probability  fsick of showing symptoms in the Ri sub-populations
 fsick_Ri = 0.60
 
 # Probability fDead of dying from the Covid-19 in the Ri St sub-populations
-fdead_Ri = 0.15
+fdead_Ri = 0.20
 
 # Probability of showing symptoms and die in the risk group
 fside_ri = fsick_Ri * fdead_Ri
@@ -87,7 +84,7 @@ tdistc = 246
 tdistd = 280
 
 # Sustainability period for the general distancing measures (hardlockdown)
-tdiste = 380  #330
+tdiste = 380
 
 # Sustainability period for the general distancing measures (postlockdown)
 tdistf = 450
