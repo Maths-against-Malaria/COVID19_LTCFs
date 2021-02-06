@@ -7,9 +7,7 @@ beta = func.betah((cH, func.r0(0, ParamRO[0][0:3]) / denBeta))
 
 # The adjusted mixing matrix
 coef_NGM = func.contmat(beta/func.r0(0, ParamRO[0][0:3]), Xfinal_init_NT[0])
-xxx = Xfinal_init_NT[0]
-print(xxx[0][0]*coef_NGM)
-print(xxx[2][2]*coef_NGM*NPop[2]/N)
+
 class ModelFunc:
     """This class contains the function that builds the differential equations of the model"""
 
@@ -39,7 +37,7 @@ class ModelFunc:
             mixmat = np.multiply(Xfinal_init[4], coef_NGM)
         elif tdiste <= t < tdistf:
             mixmat = np.multiply(Xfinal_init[5], coef_NGM)
-        elif tdistf <= t < tdistg: #t >= tdistf:
+        elif tdistf <= t < tdistg:  # t >= tdistf:
             mixmat = np.multiply(Xfinal_init[6], coef_NGM)
         elif tdistg <= t < tdisth:
             mixmat = np.multiply(Xfinal_init[7], coef_NGM)
