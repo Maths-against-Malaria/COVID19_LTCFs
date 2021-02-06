@@ -22,26 +22,27 @@ LExt = 50
 N = 331e6
 NPop = (329.177e6, 423e3, 1.4e6)
 
-N_init_inf = 100
+N_init_inf = 75  # 100
 
 # Initial number of individuals in the different compartments
 y0 = [0 for i in np.arange(5 * (NH[0] + NH[1] + NH[2] + NH[3] + 2) + 3)]
 y0[0], y0[1], y0[2] = (329.177e6 - N_init_inf, 423e3, 1.4e6)  # Susceptible individuals in SGe, SSt, SRi
 y0[NH[0] + NH[1] + 3] = N_init_inf  # Initial fully infectious individuals in the general population
 
+
 # Sensitivity of the test sH
-sH = np.array([[0,    0,     0,    0],              # No test
-               [0,    0.10,  0.65, 0.35],           # Poor test
-               [0.03, 0.30,  0.75, 0.50],           # Intermediate test
-               [0.15, 0.60,  0.80, 0.60],           # Good test
-               [0.25, 0.75,  0.90, 0.65],           # Very good test
-               [0.30, 0.80,  0.95, 0.85]])          # Excellent test
+sH = np.array([[0,    0,     0,    0]])#,              # No test
+               #[0,    0.10,  0.65, 0.35],           # Poor test
+               #[0.03, 0.30,  0.75, 0.50],           # Intermediate test
+               #[0.15, 0.60,  0.80, 0.60],           # Good test
+               #[0.25, 0.75,  0.90, 0.65],           # Very good test
+               #[0.30, 0.80,  0.95, 0.85]])          # Excellent test
 
 # Contagiousness at the infectious stages P, I, L
 cH = (0.5, 1, 0.5)
 
 # Probability  fsick of showing symptoms in the Ge, and St sub-populations
-fsick = 0.50
+fsick = 0.58
 
 # Probability fiso of being isolated in the Ge, and St sub-populations
 fiso = 0.48
@@ -56,7 +57,7 @@ fside = fsick * fdead
 fsiso = fsick * fiso
 
 # Probability  fsick of showing symptoms in the Ri sub-populations
-fsick_Ri = 0.70
+fsick_Ri = 0.58
 
 # Probability fDead of dying from the Covid-19 in the Ri St sub-populations
 fdead_Ri = 0.07
@@ -74,21 +75,21 @@ sim_time = 800
 tiso = (20, sim_time)
 
 # Sustainability period for the general distancing measures (first lockdown)
-tdista = 35  # March    15th, 2020
-tdistb = 75  # May      29th
-tdistc = 185  # August   02nd
-tdistd = 200  # October  01st
-tdiste = 250  # November 05th
-tdistf = 260  # November 24th
-tdistg = 309  # December 01st
-tdisth = 315  # December 10th
-tdisti = 325  # December 20th
-tdistj = 350  # January  08th, 2021
-tdistk = 500  # April    15th
+tdista = 55  #35  # March    15th, 2020
+tdistb = 130  # 75  # May      29th
+tdistc = 195  # 185  # August   02nd
+tdistd = 255  # 200  # October  01st
+tdiste = 290  # 250  # November 05th
+tdistf = 309  # 260  # November 24th
+tdistg = 316  # 309  # December 01st
+tdisth = 325  # 315  # December 10th
+tdisti = 335  # 325  # December 20th
+tdistj = 354  # 350  # January  08th, 2021
+tdistk = 450  # 500  # April    15th
 
 # Additional test control for Ge per disease stage (P, I, L)
-fpos_mat = np.array([[0, 0, 0],
-                     [0, 0, 0]])
+#fpos_mat = np.array([[0, 0, 0],
+#                     [0, 0, 0]])
 
 # Effectiveness of home isolation in the general population, and the LTCF employees
 phome = 0.75
@@ -188,26 +189,41 @@ HRight = [EGeR, EStnR, EStsR, EStpR, ERiR, PGeR, PStnR, PStsR, PStpR, PRiR, IGeR
 nPop = (60, 60, 30)
 
 xm = 0.9992
-ym = 0.0006
+ym = 0.000767
 um = ym*nPop[0]*NPop[0]/(nPop[1]*NPop[1])
-vm = 0.20
+vm = 0.24
 
 pm = (1 - xm - ym)*nPop[0]*NPop[0]/(nPop[2]*NPop[2])
 qm = (1 - um - vm)*nPop[1]*NPop[1]/(nPop[2]*NPop[2])
 
-pcontreduc_WT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
-                              [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
+pcontreduc_WT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
+                              [0, 0.60, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
                               [0, 0.60, 0.45, 0.50, 0.40, 0.55, 0.50, 0.60, 0.65, 0.60, 0.65, 0],      # pRiGe
-                              [0, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55],   # pStSt
-                              [0, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40],   # pStRi
-                              [0, 0.20, 0.15, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.10]])  # pRiRi
+                              [0, 0.55, 0.20, 0.40, 0.35, 0.55, 0.40, 0.50, 0.55, 0.50, 0.55, 0.50],   # pStSt
+                              [0, 0.40, 0.25, 0.30, 0.25, 0.40, 0.25, 0.30, 0.20, 0.30, 0.40, 0.20],   # pStRi
+                              [0, 0.20, 0.05, 0.15, 0.10, 0.20, 0.10, 0.15, 0.20, 0.15, 0.20, 0.05]])  # pRiRi
 
-pcontreduc_NT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
-                              [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
+pcontreduc_NT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
+                              [0, 0.60, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
                               [0, 0.60, 0.45, 0.50, 0.40, 0.55, 0.50, 0.60, 0.65, 0.60, 0.65, 0],      # pRiGe
-                              [0, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55, 0.55],   # pStSt
-                              [0, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40, 0.40],   # pStRi
-                              [0, 0.20, 0.15, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.20, 0.10]])  # pRiRi
+                              [0, 0.55, 0.20, 0.40, 0.35, 0.55, 0.40, 0.50, 0.55, 0.50, 0.55, 0.50],   # pStSt
+                              [0, 0.40, 0.25, 0.30, 0.25, 0.40, 0.25, 0.30, 0.20, 0.30, 0.40, 0.20],   # pStRi
+                              [0, 0.20, 0.05, 0.15, 0.10, 0.20, 0.10, 0.15, 0.20, 0.15, 0.20, 0.05]])  # pRiRi
+#
+# pcontreduc_WT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
+#                               [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
+#                               [0, 0.60, 0.45, 0.50, 0.40, 0.55, 0.50, 0.60, 0.65, 0.60, 0.65, 0],      # pRiGe
+#                               [0, 0.55, 0.20, 0.40, 0.35, 0.55, 0.40, 0.50, 0.55, 0.50, 0.55, 0.50],   # pStSt
+#                               [0, 0.40, 0.25, 0.30, 0.25, 0.40, 0.25, 0.30, 0.20, 0.30, 0.40, 0.20],   # pStRi
+#                               [0, 0.20, 0.05, 0.15, 0.10, 0.20, 0.10, 0.15, 0.20, 0.15, 0.20, 0.05]])  # pRiRi
+#
+# pcontreduc_NT_mat = np.array([[0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
+#                               [0, 0.60, 0.25, 0.50, 0.40, 0.60, 0.45, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
+#                               [0, 0.60, 0.45, 0.50, 0.40, 0.55, 0.50, 0.60, 0.65, 0.60, 0.65, 0],      # pRiGe
+#                               [0, 0.55, 0.20, 0.40, 0.35, 0.55, 0.40, 0.50, 0.55, 0.50, 0.55, 0.50],   # pStSt
+#                               [0, 0.40, 0.25, 0.30, 0.25, 0.40, 0.25, 0.30, 0.20, 0.30, 0.40, 0.20],   # pStRi
+#                               [0, 0.20, 0.05, 0.15, 0.10, 0.20, 0.10, 0.15, 0.20, 0.15, 0.20, 0.05]])  # pRiRi
+
 # Unadjusted mixing matrix with contact reduction (with testing)
 Xfinal_init_NT = []
 Xfinal_init_WT = []

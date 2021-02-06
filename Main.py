@@ -22,12 +22,10 @@ for i in range(aa):  # with and without seasonality
 
     for j in range(bb):  # Test Quality
         TestQual = sH[j, ]
-
+        fh = []
         if j == 0:      # No test
-            FPos = fpos_mat[0]
             XF_Init = Xfinal_init_NT
         else:           # Testing control
-            FPos = fpos_mat[1]
             XF_Init = Xfinal_init_WT
 
         for k in range(cc):  # Testing rate
@@ -41,7 +39,7 @@ for i in range(aa):  # with and without seasonality
                 alpha = 1 / Dtest[cnt]
 
                 # Solving the system
-                soln = solve_ivp(lambda t, y: Mod.f(t, y, BRep, f_e, f_p, f_i, f_l, alpha, FPos, XF_Init), [0, sim_time]
+                soln = solve_ivp(lambda t, y: Mod.f(t, y, BRep, f_e, f_p, f_i, f_l, alpha, XF_Init), [0, sim_time]
                                  , y0, method="RK45", dense_output=True)
 
                 # Building the data frame
@@ -244,6 +242,6 @@ for i in range(aa):  # with and without seasonality
                 df = df.append(df2, ignore_index=True)
 
 # Saving the data from the simulation
-df.to_csv("covid_19_risk_group_simulation_Prison.csv")
+df.to_csv("covid_19_risk_group_simulation_Prison_test.csv")
 
 print("Simulation finished successfully. Please check your data")
