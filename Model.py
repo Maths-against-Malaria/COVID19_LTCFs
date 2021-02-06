@@ -4,13 +4,12 @@ func = FuncClass()
 
 # Beta parameter at time t = 0
 beta = func.betah((cH, func.r0(0, ParamRO[0][0:3]) / denBeta))
-#print(1/func.r0(0, ParamRO[0][0:3]))
+
 # The adjusted mixing matrix
 coef_NGM = func.contmat(beta/func.r0(0, ParamRO[0][0:3]), Xfinal_init_NT[0])
-print(coef_NGM)
-print(func.r0(0, ParamRO[0][0:3]))
-#print(ParamRO[0, 0])
-
+xxx = Xfinal_init_NT[0]
+print(xxx[0][0]*coef_NGM)
+print(xxx[2][2]*coef_NGM*NPop[2]/N)
 class ModelFunc:
     """This class contains the function that builds the differential equations of the model"""
 
@@ -24,8 +23,6 @@ class ModelFunc:
         h_sum = [func.hsum(y, i, j) for i, j in zip(HLeft, HRight)]
 
         # Total number of individuals that can be isolated in quarantine wards
-        #HLeft = [0-EGeL, 1-EStnL, 2-EStsL, 3-EStpL, 4-ERiL, 5-PGeL, 6-PStnL, 7-PStsL, 8-PStpL, 9-PRiL, 10-IGeL, 11-IStnL, 12-IStsL, 13-IStpL, 14-IRiL,
-        # 15-LGeL, 16-LStnL,17-LStsL, 18-LStpL, 19-LRiL]
         aq = fsiso * (func.hsum(h_sum, 10, 13) + func.hsum(h_sum, 15, 18)) + sum([h_sum[i] for i in np.arange(3, 20, 5)]
                                                                                  )
         # Time information
@@ -42,7 +39,7 @@ class ModelFunc:
             mixmat = np.multiply(Xfinal_init[4], coef_NGM)
         elif tdiste <= t < tdistf:
             mixmat = np.multiply(Xfinal_init[5], coef_NGM)
-        elif tdistf <= t < tdistg:
+        elif tdistf <= t < tdistg: #t >= tdistf:
             mixmat = np.multiply(Xfinal_init[6], coef_NGM)
         elif tdistg <= t < tdisth:
             mixmat = np.multiply(Xfinal_init[7], coef_NGM)
@@ -57,12 +54,7 @@ class ModelFunc:
         else:
             mixmat = np.multiply(Xfinal_init[0], coef_NGM)
 
-        if t < 10:
-            print(mixmat)
-
         # Effective infective population at stage H
-
-
         peff_stp = func.heff(phome,
                              (h_sum[8], func.hiso(tps, (aq, Qmax, h_sum[8])), func.hhome(tps, (aq, Qmax, h_sum[8]))))
 
@@ -160,9 +152,6 @@ class ModelFunc:
         out[2] = -l_ri * y[2]
 
         ###################################### population dynamic at the early infected stage E #####################
-
-        #HLeft = [0-EGeL, 1-EStnL, 2-EStsL, 3-EStpL, 4-ERiL, 5-PGeL, 6-PStnL, 7-PStsL, 8-PStpL, 9-PRiL, 10-IGeL, 11-IStnL, 12-IStsL, 13-IStpL, 14-IRiL,
-        # 15-LGeL, 16-LStnL,17-LStsL, 18-LStpL, 19-LRiL]
 
         # General population
         out[3] = l_ge * y[0] - epsi * y[3]
