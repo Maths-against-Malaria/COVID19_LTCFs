@@ -11,7 +11,7 @@ coef_NGM = func.contmat(beta/func.r0(0, ParamRO[0][0:3]), Xfinal_init_NT[0])
 class ModelFunc:
     """This class contains the function that builds the differential equations of the model"""
 
-    def f(self, t, y, brep, fe, fp, fi, fl, alpha, Xfinal_init):
+    def f(self, t, y, brep, fe, fp, fi, fl, alpha, fpos, Xfinal_init):
         """This function computes the differential equations"""
 
         # Initialize the outputs
@@ -78,8 +78,6 @@ class ModelFunc:
                                (h_sum[12], func.hiso(tps, (aq, Qmax, fsiso * h_sum[12])),
                                 func.hhome(tps, (aq, Qmax, fsiso * h_sum[12]))))
 
-
-
         ieff_stp = func.heff(phome, (
             h_sum[13], func.hiso(tps, (aq, Qmax, h_sum[13])), func.hhome(tps, (aq, Qmax, fsiso * h_sum[13]))))
 
@@ -133,7 +131,9 @@ class ModelFunc:
                         + beta_h[2] * sum(
                     [i * j for i, j in zip(mixmat[1, ], [leff_ge, sum([leff_stn, leff_sts, leff_stp]), leff_ri])]))) / N
 
-        l_ri = (mixmat[2, 0] * (beta_h[0]*h_sum[5] + beta_h[1]*ieff_geri + beta_h[2]*leff_geri)
+        l_ri = (mixmat[2, 0] * (beta_h[0] * (1 - func.in_interval_dist(t, fpos[0])) * h_sum[5]
+                                + beta_h[1] * (1 - func.in_interval_dist(t, fpos[1])) * ieff_geri
+                                + beta_h[2] * (1 - func.in_interval_dist(t, fpos[2])) * leff_geri)
                 + beta_h[0] * sum([i * j for i, j in zip(mixmat[2, 1:], [sum([h_sum[6], h_sum[7], peff_stp]), h_sum[9]])
                                    ])
                 + beta_h[1] * sum([i * j for i, j in zip(mixmat[2, 1:], [sum([ieff_stnri, ieff_stsri]), ieff_ri])])
