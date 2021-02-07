@@ -37,18 +37,19 @@ class ModelFunc:
             mixmat = np.multiply(Xfinal_init[4], coef_NGM)
         elif tdiste <= t < tdistf:
             mixmat = np.multiply(Xfinal_init[5], coef_NGM)
-        elif tdistf <= t < tdistg:  # t >= tdistf:
+        elif t >= tdistf:  # tdistf <= t < tdistg:
             mixmat = np.multiply(Xfinal_init[6], coef_NGM)
-        elif tdistg <= t < tdisth:
-            mixmat = np.multiply(Xfinal_init[7], coef_NGM)
-        elif tdisth <= t < tdisti:
-            mixmat = np.multiply(Xfinal_init[8], coef_NGM)
-        elif tdisti <= t < tdistj:
-            mixmat = np.multiply(Xfinal_init[9], coef_NGM)
-        elif tdistj <= t < tdistk:
-            mixmat = np.multiply(Xfinal_init[10], coef_NGM)
-        elif t >= tdistk:
-            mixmat = np.multiply(Xfinal_init[11], coef_NGM)
+        # Uncomment the lines below to implement the extra contact reductions of the USA model
+        #elif tdistg <= t < tdisth:
+        #    mixmat = np.multiply(Xfinal_init[7], coef_NGM)
+        #elif tdisth <= t < tdisti:
+        #    mixmat = np.multiply(Xfinal_init[8], coef_NGM)
+        #elif tdisti <= t < tdistj:
+        #   mixmat = np.multiply(Xfinal_init[9], coef_NGM)
+        #elif tdistj <= t < tdistk:
+        #    mixmat = np.multiply(Xfinal_init[10], coef_NGM)
+        #elif t >= tdistk:
+        #    mixmat = np.multiply(Xfinal_init[11], coef_NGM)
         else:
             mixmat = np.multiply(Xfinal_init[0], coef_NGM)
 
