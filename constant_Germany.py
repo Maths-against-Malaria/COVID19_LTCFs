@@ -89,6 +89,10 @@ tdiste = 380
 # Sustainability period for the general distancing measures (postlockdown)
 tdistf = 450
 
+# Additional test control for Ge per disease stage (P, I, L)
+fpos_mat = np.array([[0, 0, 0],
+                     [0, 0, 0]])
+
 # Effectiveness of home isolation in the general population, and the LTCF employees
 phome = 0.75
 

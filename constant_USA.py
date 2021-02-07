@@ -5,10 +5,10 @@ NH = (16, 16, 16, 16)
 
 # Durations at stages DE,DP,DI,DL. Dtest is the waiting time before tests results (days)
 DH = (3.7, 1, 5, 5)
-Dtest = [2]  # (1/2, 1, 2, 3, 4)
+Dtest = (1/2, 1, 2, 3, 4)
 
 # Testing rate per Erlang stage (assumes that we have the same number of Erlang stages
-DXi = [5]  # (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
+DXi = (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
 test_rate = [1/i for i in DXi]
 
 # drifting rates (epsilon, phi, gamma, delta)
@@ -88,8 +88,8 @@ tdistj = 354  # 350  # January  08th, 2021
 tdistk = 450  # 500  # April    15th
 
 # Additional test control for Ge per disease stage (P, I, L)
-#fpos_mat = np.array([[0, 0, 0],
-#                     [0, 0, 0]])
+fpos_mat = np.array([[0, 0, 0],
+                     [0, 0, 0]])
 
 # Effectiveness of home isolation in the general population, and the LTCF employees
 phome = 0.75
