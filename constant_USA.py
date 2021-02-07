@@ -31,12 +31,12 @@ y0[NH[0] + NH[1] + 3] = N_init_inf  # Initial fully infectious individuals in th
 
 
 # Sensitivity of the test sH
-sH = np.array([[0,    0,     0,    0]]) #,              # No test
-               #[0,    0.10,  0.65, 0.35],           # Poor test
-               #[0.03, 0.30,  0.75, 0.50],           # Intermediate test
-               #[0.15, 0.60,  0.80, 0.60],           # Good test
-               #[0.25, 0.75,  0.90, 0.65],           # Very good test
-               #[0.30, 0.80,  0.95, 0.85]         # Excellent test
+sH = np.array([[0,    0,     0,    0],              # No test
+               [0,    0.10,  0.65, 0.35],           # Poor test
+               [0.03, 0.30,  0.75, 0.50],           # Intermediate test
+               [0.15, 0.60,  0.80, 0.60],           # Good test
+               [0.25, 0.75,  0.90, 0.65],           # Very good test
+               [0.30, 0.80,  0.95, 0.85]])          # Excellent test
 
 # Contagiousness at the infectious stages P, I, L
 cH = (0.5, 1, 0.5)
@@ -207,9 +207,9 @@ pcontreduc_WT_mat = np.array([[0, 0.62, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70
 pcontreduc_NT_mat = np.array([[0, 0.62, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pGe
                               [0, 0.62, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pGeSt
                               [0, 0.62, 0.25, 0.50, 0.40, 0.65, 0.50, 0.55, 0.70, 0.55, 0.70, 0],      # pRiGe
-                              [0, 0.50, 0.10, 0.40, 0.30, 0.55, 0.40, 0.45, 0.55, 0.45, 0.55, 0.50],   # pStSt
-                              [0, 0.40, 0.10, 0.30, 0.20, 0.45, 0.30, 0.35, 0.45, 0.35, 0.45, 0.40],   # pStRi
-                              [0, 0.20, 0.05, 0.10, 0.15, 0.25, 0.20, 0.20, 0.30, 0.20, 0.25, 0.20]])  # pRiRi
+                              [0, 0.50, 0.10, 0.40, 0.30, 0.55, 0.40, 0.45, 0.55, 0.45, 0.55, 0],   # pStSt
+                              [0, 0.40, 0.10, 0.30, 0.20, 0.45, 0.30, 0.35, 0.45, 0.35, 0.45, 0],   # pStRi
+                              [0, 0.20, 0.05, 0.10, 0.15, 0.25, 0.20, 0.20, 0.30, 0.20, 0.25, 0]])  # pRiRi
 
 # Unadjusted mixing matrix with contact reduction (with testing)
 Xfinal_init_NT = []
