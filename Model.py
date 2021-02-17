@@ -6,7 +6,8 @@ func = FuncClass()
 beta = func.betah((cH, func.r0(0, ParamRO[0][0:3]) / denBeta))
 
 # The adjusted mixing matrix
-coef_NGM = func.contmat(beta/func.r0(0, ParamRO[0][0:3]), Xfinal_init_NT[0])
+coef_NGM = func.contmat(beta / func.r0(0, ParamRO[0][0:3]), Xfinal_init_NT[0])
+
 
 class ModelFunc:
     """This class contains the function that builds the differential equations of the model"""
@@ -37,19 +38,20 @@ class ModelFunc:
             mixmat = np.multiply(Xfinal_init[4], coef_NGM)
         elif tdiste <= t < tdistf:
             mixmat = np.multiply(Xfinal_init[5], coef_NGM)
-        elif t >= tdistf:  # tdistf <= t < tdistg:  #
+        elif tdistf <= t < tdistg:  # For LTCFs, use the following condition ---> t >= tdistf:
             mixmat = np.multiply(Xfinal_init[6], coef_NGM)
-        # Uncomment the lines below to implement the extra contact reductions of the USA model
-        #elif tdistg <= t < tdisth:
-        #    mixmat = np.multiply(Xfinal_init[7], coef_NGM)
-        #elif tdisth <= t < tdisti:
-        #    mixmat = np.multiply(Xfinal_init[8], coef_NGM)
-        #elif tdisti <= t < tdistj:
-        #   mixmat = np.multiply(Xfinal_init[9], coef_NGM)
-        #elif tdistj <= t < tdistk:
-        #    mixmat = np.multiply(Xfinal_init[10], coef_NGM)
-        #elif t >= tdistk:
-        #    mixmat = np.multiply(Xfinal_init[11], coef_NGM)
+        ##### Comment the lines below to implement the contact reductions of the LTCF model
+        elif tdistg <= t < tdisth:
+            mixmat = np.multiply(Xfinal_init[7], coef_NGM)
+        elif tdisth <= t < tdisti:
+            mixmat = np.multiply(Xfinal_init[8], coef_NGM)
+        elif tdisti <= t < tdistj:
+            mixmat = np.multiply(Xfinal_init[9], coef_NGM)
+        elif tdistj <= t < tdistk:
+            mixmat = np.multiply(Xfinal_init[10], coef_NGM)
+        elif t >= tdistk:
+            mixmat = np.multiply(Xfinal_init[11], coef_NGM)
+        #####
         else:
             mixmat = np.multiply(Xfinal_init[0], coef_NGM)
 
@@ -104,32 +106,29 @@ class ModelFunc:
                                (h_sum[17], func.hiso(tps, (aq, Qmax, fsiso * h_sum[17])),
                                 func.hhome(tps, (aq, Qmax, fsiso * h_sum[17]))))
 
-
-
         leff_stp = func.heff(phome,
                              (h_sum[18], func.hiso(tps, (aq, Qmax, h_sum[18])),
                               func.hhome(tps, (aq, Qmax, fsiso * h_sum[18]))))
 
         leff_ri = func.heffri((h_sum[19], func.hisori(tps, fsick_Ri * h_sum[19])))
 
-
         # Beta parameter at time t
         beta_h = func.betah((cH, func.r0(t, brep) / denBeta))
 
         # Force of infection in the sub-populations Ge, St, and Ri
         l_ge = (LExt + (beta_h[0] * sum(
-            [i * j for i, j in zip(mixmat[0, ], [h_sum[5], sum([h_sum[6], h_sum[7], peff_stp]), h_sum[9]])])
+            [i * j for i, j in zip(mixmat[0,], [h_sum[5], sum([h_sum[6], h_sum[7], peff_stp]), h_sum[9]])])
                         + beta_h[1] * sum(
-                    [i * j for i, j in zip(mixmat[0, ], [ieff_ge, sum([ieff_stn, ieff_sts, ieff_stp]), ieff_ri])])
+                    [i * j for i, j in zip(mixmat[0,], [ieff_ge, sum([ieff_stn, ieff_sts, ieff_stp]), ieff_ri])])
                         + beta_h[2] * sum(
-                    [i * j for i, j in zip(mixmat[0, ], [leff_ge, sum([leff_stn, leff_sts, leff_stp]), leff_ri])]))) / N
+                    [i * j for i, j in zip(mixmat[0,], [leff_ge, sum([leff_stn, leff_sts, leff_stp]), leff_ri])]))) / N
 
         l_st = (LExt + (beta_h[0] * sum(
-            [i * j for i, j in zip(mixmat[1, ], [h_sum[5], sum([h_sum[6], h_sum[7], peff_stp]), h_sum[9]])])
+            [i * j for i, j in zip(mixmat[1,], [h_sum[5], sum([h_sum[6], h_sum[7], peff_stp]), h_sum[9]])])
                         + beta_h[1] * sum(
-                    [i * j for i, j in zip(mixmat[1, ], [ieff_ge, sum([ieff_stn, ieff_sts, ieff_stp]), ieff_ri])])
+                    [i * j for i, j in zip(mixmat[1,], [ieff_ge, sum([ieff_stn, ieff_sts, ieff_stp]), ieff_ri])])
                         + beta_h[2] * sum(
-                    [i * j for i, j in zip(mixmat[1, ], [leff_ge, sum([leff_stn, leff_sts, leff_stp]), leff_ri])]))) / N
+                    [i * j for i, j in zip(mixmat[1,], [leff_ge, sum([leff_stn, leff_sts, leff_stp]), leff_ri])]))) / N
 
         l_ri = (mixmat[2, 0] * (beta_h[0] * (1 - func.in_interval_dist(t, fpos[0])) * h_sum[5]
                                 + beta_h[1] * (1 - func.in_interval_dist(t, fpos[1])) * ieff_geri
@@ -139,6 +138,7 @@ class ModelFunc:
                 + beta_h[1] * sum([i * j for i, j in zip(mixmat[2, 1:], [sum([ieff_stnri, ieff_stsri]), ieff_ri])])
                 + beta_h[2] * sum([i * j for i, j in zip(mixmat[2, 1:], [sum([leff_stnri, leff_stsri]), leff_ri])])) / N
 
+        # ODEs
         ###################################### Susceptible population ###############################################
 
         # General population
@@ -164,7 +164,7 @@ class ModelFunc:
             out[i] = epsi * (y[i - 1] - y[i]) - fe * y[i]
 
             # St,*
-        out[EStsL] = fe * y[EStnL] - (epsi + alpha)*y[EStsL]
+        out[EStsL] = fe * y[EStnL] - (epsi + alpha) * y[EStsL]
         for i, k in zip(range(EStsL + 1, EStsR), range(EStnL + 1, EStnR)):
             out[i] = fe * y[k] + epsi * (y[i - 1] - y[i]) - alpha * y[i]
 

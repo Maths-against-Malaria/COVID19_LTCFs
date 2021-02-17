@@ -5,10 +5,10 @@ NH = (16, 16, 16, 16)
 
 # Durations at stages DE,DP,DI,DL. Dtest is the waiting time before tests results (days)
 DH = (3.7, 1, 5, 5)
-Dtest = [2]  # (1/2, 1, 2, 3, 4)
+Dtest = (1/2, 1, 2, 3, 4)
 
 # Testing rate per Erlang stage (assumes that we have the same number of Erlang stages
-DXi = [5]  # (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
+DXi = (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
 test_rate = [1/i for i in DXi]
 
 # drifting rates (epsilon, phi, gamma, delta)
@@ -22,6 +22,7 @@ LExt = 50
 N = 331e6
 NPop = (329.177e6, 423e3, 1.4e6)
 
+# Number of initial infections
 N_init_inf = 75
 
 # Initial number of individuals in the different compartments
@@ -31,13 +32,13 @@ y0[NH[0] + NH[1] + 3] = N_init_inf  # Initial fully infectious individuals in th
 
 
 # Sensitivity of the test sH
-sH = np.array([[0,    0,     0,    0]]) #,              # No test
-               #[0,    0.10,  0.65, 0.35],           # Poor test
-               #[0.03, 0.30,  0.75, 0.50],           # Intermediate test
-               #[0.15, 0.60,  0.80, 0.60],           # Good test
-                #[0,    0.35,  0.85, 0.85],       # Antigen test
-               #[0.25, 0.75,  0.90, 0.65],           # Very good test
-               #[0.30, 0.80,  0.95, 0.85]])          # Excellent test
+sH = np.array([[0.00, 0.00,  0.00, 0.00],           # No test
+               [0.00, 0.10,  0.65, 0.35],           # Poor test
+               [0.03, 0.30,  0.75, 0.50],           # Intermediate test
+               [0.15, 0.60,  0.80, 0.60],           # Good test
+               [0.25, 0.75,  0.90, 0.65],           # Very good test
+               [0.30, 0.80,  0.95, 0.85],           # Excellent test
+               [0.00, 0.35,  0.85, 0.85]])          # Antigen test
 
 # Contagiousness at the infectious stages P, I, L
 cH = (0.5, 1, 0.5)
@@ -75,18 +76,18 @@ sim_time = 800
 # sustainability period of quarantine measures (till the end of the simulation)
 tiso = (20, sim_time)
 
-# Sustainability period for the general distancing measures (first lockdown)
-tdista = 50   # March    10th, 2020
-tdistb = 115  # May      14th
-tdistc = 190  # 185  # August   02nd
-tdistd = 255  # 200  # October  01st
-tdiste = 290  # 250  # November 05th
-tdistf = 309  # 260  # November 24th
-tdistg = 316  # 309  # December 01st
-tdisth = 325  # 315  # December 10th
-tdisti = 335  # 325  # December 20th
-tdistj = 354  # 350  # January  08th, 2021
-tdistk = 450  # 500  # April    15th
+# Sustainability period for the general distancing measures
+tdista = 50   # March    10, 2020
+tdistb = 115  # May      14
+tdistc = 190  # July     28
+tdistd = 255  # October  01
+tdiste = 290  # November 05
+tdistf = 309  # November 24
+tdistg = 316  # December 01
+tdisth = 325  # December 10
+tdisti = 335  # December 20
+tdistj = 354  # January  08, 2021
+tdistk = 450  # April    15
 
 # Additional test control for Ge per disease stage (P, I, L)
 fpos_mat = np.array([[0, 0, 0],
@@ -167,7 +168,7 @@ LRiL = IRiR
 LRiR = LRiL + NH[3]
 
 # Recovered
-RecGe = LRiR  # 5 * NH[0] + 5 * NH[1] + 5 * NH[2] + 5 * NH[3] + 3
+RecGe = LRiR
 RecStn = RecGe + 1
 RecSts = RecStn + 1
 RecStp = RecSts + 1
@@ -211,7 +212,8 @@ pcontreduc_NT_mat = np.array([[0, 0.55, 0.22, 0.55, 0.45, 0.65, 0.55, 0.60, 0.70
                               [0, 0.37, 0.05, 0.50, 0.30, 0.55, 0.40, 0.50, 0.55, 0.45, 0.55, 0],   # pStSt
                               [0, 0.20, 0.05, 0.50, 0.25, 0.45, 0.30, 0.35, 0.45, 0.35, 0.45, 0],   # pStRi
                               [0, 0.05, 0.00, 0.25, 0.20, 0.25, 0.22, 0.20, 0.30, 0.20, 0.25, 0]])  # pRiRi
-# Unadjusted mixing matrix with contact reduction (with testing)
+
+# Unadjusted contact matrix with testing intervention
 Xfinal_init_NT = []
 Xfinal_init_WT = []
 
@@ -228,7 +230,7 @@ for i in range(12):
                       [1-pcontreduc_loop[2], 1-pcontreduc_loop[4],  1-pcontreduc_loop[5]]])
     Xfinal_init_WT.append(np.multiply(xinit, M_mat))
 
-# Unadjusted contact matrix with no test
+# Unadjusted contact matrix with no testing intervention
 for i in range(12):
     pcontreduc_loop = list(pcontreduc_NT_mat[:, i])
 

@@ -5,10 +5,10 @@ NH = (16, 16, 16, 16)
 
 # Durations at stages DE,DP,DI,DL. Dtest is the waiting time before tests results (days)
 DH = (3.7, 1, 5, 5)
-Dtest = [1/96]  # (1/2, 1, 2, 3, 4)
+Dtest = (1/2, 1, 2, 3, 4)
 
 # Testing rate per Erlang stage (assumes that we have the same number of Erlang stages
-DXi = [1/2, 1]  # (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
+DXi = (1, 2, 5, 7, 14)  # Time spent between 2 consecutive tests (days)
 test_rate = [1/i for i in DXi]
 
 # drifting rates (epsilon, phi, gamma, delta)
@@ -30,13 +30,13 @@ y0[0], y0[1], y0[2] = (81.8e6 - N_init_inf, 5e5, 7e5)  # Susceptible individuals
 y0[NH[0] + NH[1] + 3] = N_init_inf  # Initial fully infectious individuals in the general population
 
 # Sensitivity of the test sH
-sH = np.array([[0,    0,     0,    0],              # No test
-               #[0,    0.10,  0.65, 0.35],           # Poor test
-               #[0.03, 0.30,  0.75, 0.50],           # Intermediate test
-               #[0.15, 0.60,  0.80, 0.60],           # Good test
-               [0,    0.35,  0.85, 0.85]]) #,       # Antigen test
-               #[0.25, 0.75,  0.90, 0.65],           # Very good test
-               #[0.30, 0.80,  0.95, 0.85]])          # Excellent test
+sH = np.array([[0.00, 0.00,  0.00, 0.00],           # No test
+               [0.00, 0.10,  0.65, 0.35],           # Poor test
+               [0.03, 0.30,  0.75, 0.50],           # Intermediate test
+               [0.15, 0.60,  0.80, 0.60],           # Good test
+               [0.25, 0.75,  0.90, 0.65],           # Very good test
+               [0.30, 0.80,  0.95, 0.85],           # Excellent test
+               [0.00, 0.35,  0.85, 0.85]])          # Antigen test
 
 # Contagiousness at the infectious stages P, I, L
 cH = (0.5, 1, 0.5)
@@ -74,20 +74,12 @@ sim_time = 750
 # sustainability period of quarantine measures (till the end of the simulation)
 tiso = (30, sim_time)
 
-# Sustainability period for the general distancing measures (first lockdown)
+# Sustainability period for the general distancing measures
 tdista = 40
 tdistb = 82
-
-# Sustainability period for the general distancing measures (summer lockdown)
 tdistc = 246
-
-# Sustainability period for the general distancing measures (soft lockdown)
 tdistd = 280
-
-# Sustainability period for the general distancing measures (hardlockdown)
 tdiste = 380
-
-# Sustainability period for the general distancing measures (postlockdown)
 tdistf = 450
 
 # Additional test control for Ge per disease stage (P, I, L)
@@ -169,7 +161,7 @@ LRiL = IRiR
 LRiR = LRiL + NH[3]
 
 # Recovered
-RecGe = LRiR  # 5 * NH[0] + 5 * NH[1] + 5 * NH[2] + 5 * NH[3] + 3
+RecGe = LRiR
 RecStn = RecGe + 1
 RecSts = RecStn + 1
 RecStp = RecSts + 1
