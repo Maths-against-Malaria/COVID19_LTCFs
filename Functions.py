@@ -1,6 +1,6 @@
 # Uncomment the following line and comment the next one if you are simulating LTCF
-# from constant_Germany import *
-from constant_USA_New import *
+# from constant_LTCFs_Germany import *
+from constant_IFs_USA import *
 
 class FuncClass:
     """This class contains all the functions we need to define the model"""
