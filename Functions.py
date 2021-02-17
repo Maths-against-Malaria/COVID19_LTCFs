@@ -1,5 +1,6 @@
-from constant_Germany import *
-# from constant_USA import *    # Uncomment this line and comment the line above if you are simulating USA
+# Uncomment the following line and comment the next one if you are simulating LTCF
+# from constant_LTCFs_Germany import *
+from constant_IFs_USA import *
 
 class FuncClass:
     """This class contains all the functions we need to define the model"""
@@ -58,15 +59,6 @@ class FuncClass:
         else:
             return 0
 
-        #  if tdista <= t < tdistb:
-         #   return inp_var[0]
-        # elif tdistb <= t < tdistc:
-          #  return inp_var[1]
-       # elif tdistc <= t < tdistd:
-         #    return inp_var[2]
-        # else:
-          #  return inp_var[3]
-
     def in_interval_dist(self, t, inp_var):
         """Returns the input parameter if time frame is within the period when distancing measure apply.
         The parameter is active during the period from tdist1 to tdist2.
@@ -78,16 +70,10 @@ class FuncClass:
                inp_var = probability for Ge to be tested positive at  the disease stages P, I, L.
         """
 
-        # is_in_interval_dist = t[2] >= t[0] >= t[1]
-        #print(t)
         if tdista <= t <= tdistd:
             return inp_var
         else:
             return 0
-        # if is_in_interval_dist:
-        #    return inp_var
-        # else:
-        #    return 0
 
     def r0(self, t, inp_var):
         """This function returns the value of the seasonal basic reproduction number at time t.
@@ -204,8 +190,7 @@ class FuncClass:
     def contmat(self, inp_var, xinit):
         """This function finds the value of R0 in the system at the initial time. The value obtained  is therefore divided
         by the value of R0 we want in our population. The coefficient that is obtained is used to multiply the mixing matrix
-        parameter:
-            inp_var =
+        parameter.
         """
 
         # Initial mixing matrix
@@ -433,8 +418,5 @@ class FuncClass:
 
         # Coefficient
         coef = 1 / Max_Eig  # Coef used as a multiplication parameter for the mixing matrix to assure that the
-        # Max_Eig = R0
 
         return coef
-        #return [coef * xGG, coef * xGS, coef * xGR, coef * xSG, coef * xSS, coef * xSR, coef * xRG, coef * xRS,
-        #        coef * xRR]

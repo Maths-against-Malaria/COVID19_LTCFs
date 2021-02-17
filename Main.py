@@ -15,7 +15,7 @@ bb = len(sH)
 cc = len(test_rate)
 dd = len(Dtest)
 
-for i in range(aa):  # with and without seasonality
+for i in range(aa):
     SeFl = ParamRO[i]
     BRep = SeFl[0:3]
     season = SeFl[3]
@@ -23,10 +23,10 @@ for i in range(aa):  # with and without seasonality
     for j in range(bb):  # Test Quality
         TestQual = sH[j, ]
         fh = []
-        if j == 0:      # No test
+        if j == 0:                      # Scenario without testing intervention
             FPos = fpos_mat[0]
             XF_Init = Xfinal_init_NT
-        else:           # Testing control
+        else:                           # Scenario with testing intervention
             FPos = fpos_mat[1]
             XF_Init = Xfinal_init_WT
 
@@ -34,8 +34,8 @@ for i in range(aa):  # with and without seasonality
             xi = np.repeat(test_rate[k], 4)
             fh = [TestQ * TestR for TestQ, TestR in zip(TestQual, xi)]
             f_e, f_p, f_i, f_l = fh
-            for cnt in range(dd):  # Waiting time
 
+            for cnt in range(dd):  # Waiting time
                 df2 = pd.DataFrame(columns=colonne)  # Empty data frame
 
                 alpha = 1 / Dtest[cnt]
@@ -66,7 +66,6 @@ for i in range(aa):  # with and without seasonality
                 popul = Ge + St + Stpos + Ri 
 
                 # Column: Infected
-
                 EGe = [0 for i in range(l)]
                 PGe = [0 for i in range(l)]
                 IGe = [0 for i in range(l)]
@@ -86,7 +85,6 @@ for i in range(aa):  # with and without seasonality
                 out1 = [m + n for m, n in zip(out11, out12)]
 
                 # Staff population
-
                 ESt = [0 for i in range(l)]
                 PSt = [0 for i in range(l)]
                 ISt = [0 for i in range(l)]
@@ -200,8 +198,10 @@ for i in range(aa):  # with and without seasonality
                     TQ = ["Good" for ii in range(4 * l)]
                 elif j == 4:
                     TQ = ["Very_good" for ii in range(4 * l)]
-                else:
+                elif j == 5:
                     TQ = ["Excellent" for ii in range(4 * l)]
+                else:
+                    TQ = ["Antigen" for ii in range(4 * l)]
 
                 # Column: Test rate
                 if k == 0:
@@ -244,6 +244,6 @@ for i in range(aa):  # with and without seasonality
                 df = df.append(df2, ignore_index=True)
 
 # Saving the data from the simulation
-df.to_csv("covid_19_risk_group_simulation_LTCF_QT_NCR.csv")
+df.to_csv("covid_19_risk_group_simulation_Prison.csv")
 
 print("Simulation finished successfully. Please check your data")
