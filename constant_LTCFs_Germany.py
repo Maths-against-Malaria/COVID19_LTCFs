@@ -22,6 +22,7 @@ LExt = 45
 NPop = (81.8e6, 5e5, 7e5)
 N = sum(NPop)
 
+# Initial number of infections
 N_init_inf = 200
 
 # Initial number of individuals in the different compartments
