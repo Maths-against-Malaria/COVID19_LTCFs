@@ -1,1 +1,1 @@
-# COVID19_LTCFs
+This repository contains the model used for the simulations in the paper ``Preventing COVID-19 spread in closed facilities by regular testing of employees – an efficient intervention in long-term care facilities and prisons?´´. The model allows simulating the dynamic of covid19 in Germany and US long-term care facilities (LTCFs) and incarceration facilities (IFs), respectively.
