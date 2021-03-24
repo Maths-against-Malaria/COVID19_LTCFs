@@ -8,6 +8,6 @@ Files included:
 
 3- Model.py = script in which the ordinary differential equations describing the compartments are defined;
 
-4- Constant_IFs_USA = script in which the parameters used for the simulation in the context of US incarceration facilities (IFs) are defined;
+4- Constant_IFs_USA = script in which the parameters used for the simulation in the context of US IFs are defined;
 
-5- Constant_LTCFs_Germany = script in which the parameters used for the simulation in the context of German long-term carre facilities (LTCFs) are defined.
+5- Constant_LTCFs_Germany = script in which the parameters used for the simulation in the context of German LTCFs are defined.
